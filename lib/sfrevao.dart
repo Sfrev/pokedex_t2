@@ -166,7 +166,9 @@ class _GreetingState extends State<Greeting> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: IconButton.filled(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         icon: const Icon(Icons.arrow_back),
                       ),
                     ),
