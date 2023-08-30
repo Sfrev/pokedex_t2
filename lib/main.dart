@@ -128,6 +128,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:pokedex_t2/l10n/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pokedex_t2/sfrevao.dart';
 
 void main() {
@@ -139,8 +142,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: const MyAppScreen(),
+      supportedLocales: L10n.all,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
     );
   }
 }
@@ -159,7 +169,7 @@ class _MyAppScreen extends State<MyAppScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Here'),
+        title: const Text(''),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -168,7 +178,7 @@ class _MyAppScreen extends State<MyAppScreen> {
         children: [
           const Text('Pokedex', style: TextStyle(fontFamily: 'pokemons', color: Colors.yellow, fontSize: 50),textAlign: TextAlign.center,),
           ElevatedButton(
-            child: const Text('Pokedex Completa', style: TextStyle(fontFamily: 'pokemons'),),
+            child: Text(AppLocalizations.of(context)!.completePokedex, style: TextStyle(fontFamily: 'pokemons'),),
             onPressed: (){
               log('RONALDINHO');
               Navigator.push(context,
@@ -176,7 +186,7 @@ class _MyAppScreen extends State<MyAppScreen> {
             },
           ),
           ElevatedButton(
-            child: const Text('Seus Pokemons', style: TextStyle(fontFamily: 'pokemons'),),
+            child: Text(AppLocalizations.of(context)!.yourPokemons, style: TextStyle(fontFamily: 'pokemons'),),
             onPressed: (){
               log('RONALDINHO');
               Navigator.push(context,
@@ -184,7 +194,7 @@ class _MyAppScreen extends State<MyAppScreen> {
             },
           ),
           ElevatedButton(
-            child: const Text('Instruções', style: TextStyle(fontFamily: 'pokemons'),),
+            child: Text(AppLocalizations.of(context)!.instructions, style: TextStyle(fontFamily: 'pokemons'),),
             onPressed: (){
               log('RONALDINHO');
               Navigator.push(context,

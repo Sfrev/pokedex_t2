@@ -1,0 +1,18 @@
+{
+  "language": "English",
+  "@language": {
+    "description": "The current Language"
+  },
+  "completePokedex": "Complete Pokedex",
+    "@completePokedex": {
+        "description": "The complete Pokedex"
+    },
+  "yourPokemons": "Your Pokemons",
+    "@yourPokemons": {
+        "description": "Your Pokemons"
+    },
+  "instructions": "Instructions",
+    "@instructions": {
+        "description": "Instructions"
+    }
+}
