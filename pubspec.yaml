@@ -29,6 +29,13 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
+    fonts:
+      - family: pokemon_hollow
+        fonts:
+          - asset: assets/pokemon_hollow.ttf
+      - family: pokemon_solid
+        fonts:
+          - asset: assets/pokemon_solid.ttf
     sdk: flutter
 
 
