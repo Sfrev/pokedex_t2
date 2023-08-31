@@ -5,6 +5,7 @@ import 'package:pokedex_t2/poke_screen.dart';
 import 'package:pokedex_t2/sfrevao.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
   // runApp(const PokemonScreenApp(id: 1));
 }
@@ -15,8 +16,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      // home: const MyAppScreen(),
-      home: const PokemonScreenApp(id: 1),
+      home: const MyAppScreen(),
+      // home: const PokemonScreenApp(id: 1),
     );
   }
 }

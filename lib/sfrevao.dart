@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pokedex_t2/poke_api.dart';
+import 'package:pokedex_t2/poke_screen.dart';
 
 class CardTitle extends StatelessWidget {
   final String pokemonName;
@@ -98,36 +99,44 @@ class ListedPokemonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            if (pokeList != null)
-              CardTitle(
-                pokemonName: titleCase(pokeList!.results[item].name),
-              )
-            else
-              const CardTitle(pokemonName: "??????????"),
-            const Divider(height: 8),
-            FutureBuilder(
-              future: PokeApi.getPokemon(1 + page * pageSize + item),
-              builder: (context, snapshot) => Expanded(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CardTypeColumn(pokemon: snapshot.data),
-                    Expanded(child: CardImage(id: 1 + page * pageSize + item)),
-                  ],
-                ),
+    return
+      GestureDetector(
+        onTap: (){
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => PokemonScreenApp(id: item+1)));
+        },
+        child:
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  if (pokeList != null)
+                    CardTitle(
+                      pokemonName: titleCase(pokeList!.results[item].name),
+                    )
+                  else
+                    const CardTitle(pokemonName: "??????????"),
+                  const Divider(height: 8),
+                  FutureBuilder(
+                    future: PokeApi.getPokemon(1 + page * pageSize + item),
+                    builder: (context, snapshot) => Expanded(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CardTypeColumn(pokemon: snapshot.data),
+                          Expanded(child: CardImage(id: 1 + page * pageSize + item)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+      );
   }
 }
 
