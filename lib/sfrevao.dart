@@ -29,8 +29,7 @@ class CardTypeColumnItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 0,
-      color: Theme.of(context).colorScheme.surfaceVariant,
+      elevation: 1,
       child: Padding(
         padding: const EdgeInsets.all(4),
         child: ConstrainedBox(
@@ -99,44 +98,45 @@ class ListedPokemonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-      GestureDetector(
-        onTap: (){
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => PokemonScreenApp(id: item+1)));
-        },
-        child:
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                children: [
-                  if (pokeList != null)
-                    CardTitle(
-                      pokemonName: titleCase(pokeList!.results[item].name),
-                    )
-                  else
-                    const CardTitle(pokemonName: "??????????"),
-                  const Divider(height: 8),
-                  FutureBuilder(
-                    future: PokeApi.getPokemon(1 + page * pageSize + item),
-                    builder: (context, snapshot) => Expanded(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CardTypeColumn(pokemon: snapshot.data),
-                          Expanded(child: CardImage(id: 1 + page * pageSize + item)),
-                        ],
-                      ),
-                    ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PokemonScreenApp(id: item + 1)));
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            children: [
+              if (pokeList != null)
+                CardTitle(
+                  pokemonName: titleCase(pokeList!.results[item].name),
+                )
+              else
+                const CardTitle(pokemonName: "??????????"),
+              const Divider(height: 8),
+              FutureBuilder(
+                future: PokeApi.getPokemon(1 + page * pageSize + item),
+                builder: (context, snapshot) => Expanded(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CardTypeColumn(pokemon: snapshot.data),
+                      Expanded(
+                          child: CardImage(id: 1 + page * pageSize + item)),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-      );
+        ),
+      ),
+    );
   }
 }
 
@@ -162,28 +162,12 @@ class _GreetingState extends State<Greeting> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: const Text('PokemonMassa'),
         ),
         body: FutureBuilder(
           future: PokeApi.getPokemonList(_page * pageSize, pageSize),
           builder: (context, snapshot) => CustomScrollView(
             slivers: [
-              SliverToBoxAdapter(
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      child: IconButton.filled(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.arrow_back),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               SliverPadding(
                 padding: const EdgeInsets.all(15),
                 sliver: SliverGrid.count(
