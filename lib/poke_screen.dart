@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:pokedex_t2/dbHelper.dart';
+import 'package:pokedex_t2/db_helper.dart';
 import 'package:pokedex_t2/poke_api.dart';
 import 'package:pokedex_t2/sfrevao.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

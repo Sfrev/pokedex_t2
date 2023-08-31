@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:developer' as dv;
 import 'package:flutter/material.dart';
-import 'package:pokedex_t2/dbHelper.dart';
+import 'package:pokedex_t2/db_helper.dart';
 import 'package:pokedex_t2/poke_api.dart';
 import 'package:pokedex_t2/poke_screen.dart';
 
