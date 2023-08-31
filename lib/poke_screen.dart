@@ -7,13 +7,16 @@ import 'package:pokedex_t2/dbHelper.dart';
 import 'package:pokedex_t2/poke_api.dart';
 import 'package:pokedex_t2/sfrevao.dart';
 
+bool justView = false;
 class PokemonScreenApp extends StatelessWidget{
   final int id;
+  final bool jV;
 
-  const PokemonScreenApp({super.key, required this.id});
+  const PokemonScreenApp({super.key, required this.id, required this.jV});
 
   @override
   Widget build(BuildContext context) {
+    justView = jV;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pokemon Screen'),
@@ -225,14 +228,8 @@ class _SwitchExampleState extends State<SwitchExample> {
           future: dbHelper.db.getAllPokes(),
           builder: (context, snapshot) {
             if(snapshot.hasData && !light){
-              log("Snap data ${snapshot.data.toString()} ${snapshot.data!.length}");
-              for(var i = 0; i < snapshot.data!.length; i++){
-                log("indice $i = ${snapshot.data![i].id}");
-                if(snapshot.data![i].id == widget.pokeId){
-                  light = true;
-                  break;
-                }
-              }
+              snapshot.data!.forEach((element) {light = light || element.id == widget.pokeId;});
+
             }
             else{
               log('Desiste bd');
@@ -247,15 +244,17 @@ class _SwitchExampleState extends State<SwitchExample> {
                 thumbColor: const MaterialStatePropertyAll<Color>(Colors.black),
                 onChanged: (bool value) {
                   // This is called when the user toggles the switch.
-                  setState(() {
-                    if(!value){
-                      dbHelper.db.deletePoke(MyPokes(id: widget.pokeId));
-                    }
-                    else{
-                      dbHelper.db.insertPoke(MyPokes(id: widget.pokeId));
-                    }
-                    light = value;
-                  });
+                  if(!justView){
+                    setState(() {
+                      if(!value){
+                        dbHelper.db.deletePoke(MyPokes(id: widget.pokeId));
+                      }
+                      else{
+                        dbHelper.db.insertPoke(MyPokes(id: widget.pokeId));
+                      }
+                      light = value;
+                    });
+                  }
                 },
             );
           }

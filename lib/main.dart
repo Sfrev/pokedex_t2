@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex_t2/sfrevao.dart';
 import 'package:pokedex_t2/instrucoes.dart';
+import 'package:pokedex_t2/sfrevinho.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,7 +64,7 @@ class _MyAppScreen extends State<MyAppScreen> {
             ),
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const Greeting()));
+                  MaterialPageRoute(builder: (context) => const Greeting2()));
             },
           ),
           ElevatedButton(
