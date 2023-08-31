@@ -14,5 +14,17 @@
   "instructions": "Instructions",
     "@instructions": {
         "description": "Instructions"
+    },
+  "pokemonScreen": "Pokemon Screen",
+    "@pokemonScreen": {
+        "description": "Pokemon Screen"
+    },
+  "coolName": "Cool Name",
+    "@coolName": {
+        "description": "Cool Name"
+    },
+  "instructionsText": "To use it is simple, in the complete pokedex screen you can see all pokemons and click on the desired one, which will direct you to another screen, of the pokemon selected there you can see all its attributes and stats, as well as clicking on the top right corner and setting this pokémon as Wild (unseen/caught) or Caught (Captured). In the captured pokemons screen, you will see all (and only) the Pokemons you've already caught!! It's very simple!! Have fun! Gotta Catch'em All!!",
+    "@instructionsText": {
+        "description": "Instructions Text"
     }
 }

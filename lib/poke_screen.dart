@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:pokedex_t2/dbHelper.dart';
 import 'package:pokedex_t2/poke_api.dart';
 import 'package:pokedex_t2/sfrevao.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 bool justView = false;
 class PokemonScreenApp extends StatelessWidget{
@@ -19,7 +20,7 @@ class PokemonScreenApp extends StatelessWidget{
     justView = jV;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pokemon Screen'),
+        title: Text(AppLocalizations.of(context)!.pokemonScreen),
       ),
         body: FutureBuilder(
           future: PokeApi.getPokemon(id),
@@ -91,7 +92,7 @@ class LoadedData extends StatelessWidget{
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-           Text((poke != null ? poke!.name :'Nome Legal'),
+           Text((poke != null ? poke!.name : AppLocalizations.of(context)!.coolName),
               style: const TextStyle(fontFamily: 'pokemons', color: Colors.yellow, fontSize: 50),
            )
         ],

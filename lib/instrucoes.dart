@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Instrucoes extends StatelessWidget {
   const Instrucoes({super.key});
@@ -7,22 +8,15 @@ class Instrucoes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Instruções'),
+        title: Text(AppLocalizations.of(context)!.instructions)
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(32.0),
+      body: Padding(
+        padding: const EdgeInsets.all(32.0),
         child: Center(
           child: Text(
-            "Para utilizar é simples, na tela de pokedex completa você pode ver "
-            "todos os pokemons e clicar no desejado, o que te destinará a outra "
-            "tela, do pokémon selecionado lá você pode ver todos seus atributos "
-            "e estatísticas, além de clicar no canto superior direito e definir "
-            "esse pokémon como Wild (não visto / pego) ou Caught (Capturado)."
-            "Na tela de pokemons capturados, você verá todos (e somente) os "
-            "pokémons que você já capturou!! É bem simples!! Bom divertimento!! "
-            "Gotta Catch'em All!!",
+            AppLocalizations.of(context)!.instructionsText,
             textAlign: TextAlign.justify,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'pokemons',
               color: Colors.black87,
               fontSize: 20,
