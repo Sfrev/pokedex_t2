@@ -162,7 +162,7 @@ class _GreetingState extends State<Greeting> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('PokemonMassa'),
+          title: const Text('Pokemon'),
         ),
         body: FutureBuilder(
           future: PokeApi.getPokemonList(_page * pageSize, pageSize),
