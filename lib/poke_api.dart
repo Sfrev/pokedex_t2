@@ -86,7 +86,7 @@ class Pokemon {
 class PokeApi {
   static Future<Pokemon> getPokemon(int id) async {
     log('Trying to get $id');
-    try{
+    try {
       final res = await http.get(
         Uri(
           scheme: 'https',
@@ -95,15 +95,14 @@ class PokeApi {
         ),
       );
 
-      log('Poke Api'+res.toString());
+      log('Poke Api$res');
       if (res.statusCode == 200) {
         return Pokemon.fromJson(jsonDecode(res.body));
       } else {
         throw Exception();
       }
-    }
-    catch(e){
-      log('AAAAAAA'+e.toString());
+    } catch (e) {
+      log('AAAAAAA$e');
       throw Exception();
     }
   }
@@ -120,7 +119,6 @@ class PokeApi {
         },
       ),
     );
-
 
     if (res.statusCode == 200) {
       return PokemonList.fromJson(jsonDecode(res.body));

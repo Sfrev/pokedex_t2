@@ -101,9 +101,14 @@ class ListedPokemonCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => PokemonScreenApp(id: item + 1, jV: false,)));
+          context,
+          MaterialPageRoute(
+            builder: (context) => PokemonScreenApp(
+              id: item + 1,
+              jV: false,
+            ),
+          ),
+        );
       },
       child: Card(
         child: Padding(
@@ -127,7 +132,8 @@ class ListedPokemonCard extends StatelessWidget {
                     children: [
                       CardTypeColumn(pokemon: snapshot.data),
                       Expanded(
-                          child: CardImage(id: 1 + page * pageSize + item)),
+                        child: CardImage(id: 1 + page * pageSize + item),
+                      ),
                     ],
                   ),
                 ),
@@ -161,61 +167,62 @@ class _GreetingState extends State<Greeting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Pokemon'),
-        ),
-        body: FutureBuilder(
-          future: PokeApi.getPokemonList(_page * pageSize, pageSize),
-          builder: (context, snapshot) => CustomScrollView(
-            slivers: [
-              SliverPadding(
-                padding: const EdgeInsets.all(15),
-                sliver: SliverGrid.count(
-                  childAspectRatio: 1.3,
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
-                  children: List.generate(pageSize, (index) {
-                    if (snapshot.hasData) {
-                      return ListedPokemonCard(
-                        pokeList: snapshot.data!,
-                        page: _page,
-                        item: index,
-                      );
-                    } else {
-                      return ListedPokemonCard(
-                        page: _page,
-                        item: index,
-                      );
-                    }
-                  }),
+      appBar: AppBar(
+        title: const Text('Pokemon'),
+      ),
+      body: FutureBuilder(
+        future: PokeApi.getPokemonList(_page * pageSize, pageSize),
+        builder: (context, snapshot) => CustomScrollView(
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.all(15),
+              sliver: SliverGrid.count(
+                childAspectRatio: 1.3,
+                crossAxisCount: 2,
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 15,
+                children: List.generate(pageSize, (index) {
+                  if (snapshot.hasData) {
+                    return ListedPokemonCard(
+                      pokeList: snapshot.data!,
+                      page: _page,
+                      item: index,
+                    );
+                  } else {
+                    return ListedPokemonCard(
+                      page: _page,
+                      item: index,
+                    );
+                  }
+                }),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        page = max(0, _page - 1);
+                      },
+                      icon: const Icon(Icons.arrow_back),
+                    ),
+                    Text('${_page + 1}'),
+                    IconButton(
+                      onPressed: () {
+                        page = _page + 1;
+                      },
+                      icon: const Icon(Icons.arrow_forward),
+                    ),
+                  ],
                 ),
               ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          page = max(0, _page - 1);
-                        },
-                        icon: const Icon(Icons.arrow_back),
-                      ),
-                      Text('${_page + 1}'),
-                      IconButton(
-                        onPressed: () {
-                          page = _page + 1;
-                        },
-                        icon: const Icon(Icons.arrow_forward),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ));
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

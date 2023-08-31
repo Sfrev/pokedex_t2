@@ -98,10 +98,12 @@ class ListedPokemonCard extends StatelessWidget {
     required this.item,
   });
 
-  bool caught(int id, List<MyPokes> myPokes){
+  bool caught(int id, List<MyPokes> myPokes) {
     dv.log('loooking for $id');
     bool ans = false;
-    myPokes.forEach((element) {if(element.id == id) ans = true;});
+    for (var element in myPokes) {
+      if (element.id == id) ans = true;
+    }
     return ans;
   }
 
@@ -110,9 +112,14 @@ class ListedPokemonCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => PokemonScreenApp(id: item + 1, jV: true,)));
+          context,
+          MaterialPageRoute(
+            builder: (context) => PokemonScreenApp(
+              id: item + 1,
+              jV: true,
+            ),
+          ),
+        );
       },
       child: Card(
         child: Padding(
@@ -120,49 +127,52 @@ class ListedPokemonCard extends StatelessWidget {
           child: Column(
             children: [
               FutureBuilder(
-                  future: dbHelper.db.getAllPokes(),
-                  builder: (context, snapshot)  {
-                    dv.log("CHEGAMO");
-                    if(snapshot.hasData) {
-                      snapshot.data!.forEach((element) {dv.log('${element.id}');});
+                future: DbHelper.db.getAllPokes(),
+                builder: (context, snapshot) {
+                  dv.log("CHEGAMO");
+                  if (snapshot.hasData) {
+                    for (var element in snapshot.data!) {
+                      dv.log('${element.id}');
                     }
-                  if (pokeList != null && caught(1 + page * pageSize + item, snapshot.data!)) {
+                  }
+                  if (pokeList != null &&
+                      caught(1 + page * pageSize + item, snapshot.data!)) {
                     return CardTitle(
-                      pokemonName: titleCase(pokeList!.results[item].name),
+                      pokemonName: titleCase(
+                        pokeList!.results[item].name,
+                      ),
                     );
                   } else {
                     return const CardTitle(pokemonName: "??????????");
                   }
-                  }),
+                },
+              ),
               const Divider(height: 8),
-              FutureBuilder(future: dbHelper.db.getAllPokes(),
-                  builder: (context, snap) =>
-                    FutureBuilder(
-                      future: PokeApi.getPokemon(1 + page * pageSize + item),
-                      // future: PokeApi.getPokemon(-1),
-                      builder: (context, snapshot) => Expanded(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if(snap.hasData && caught(1 + page * pageSize + item, snap.data!))...[
-                              CardTypeColumn(pokemon: snapshot.data),
-                              Expanded(
-                                  child: CardImage(id: 1 + page * pageSize + item)),
-                            ]
-                            else...[
-                              Expanded(
-                                  child: CardImage(id: 0)),
-                            ]
-
-                                // child: CardImage(id: 0)),
-                          ],
-                        ),
-                      ),
+              FutureBuilder(
+                future: DbHelper.db.getAllPokes(),
+                builder: (context, snap) => FutureBuilder(
+                  future: PokeApi.getPokemon(1 + page * pageSize + item),
+                  builder: (context, snapshot) => Expanded(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (snap.hasData &&
+                            caught(1 + page * pageSize + item, snap.data!)) ...[
+                          CardTypeColumn(pokemon: snapshot.data),
+                          Expanded(
+                              child: CardImage(id: 1 + page * pageSize + item)),
+                        ] else ...[
+                          const Expanded(
+                            child: CardImage(id: 0),
+                          ),
+                        ]
+                      ],
                     ),
-
                   ),
+                ),
+              ),
             ],
           ),
         ),
@@ -192,61 +202,62 @@ class _GreetingState extends State<Greeting2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Pokemon'),
-        ),
-        body: FutureBuilder(
-          future: PokeApi.getPokemonList(_page * pageSize, pageSize),
-          builder: (context, snapshot) => CustomScrollView(
-            slivers: [
-              SliverPadding(
-                padding: const EdgeInsets.all(15),
-                sliver: SliverGrid.count(
-                  childAspectRatio: 1.3,
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
-                  children: List.generate(pageSize, (index) {
-                    if (snapshot.hasData) {
-                      return ListedPokemonCard(
-                        pokeList: snapshot.data!,
-                        page: _page,
-                        item: index,
-                      );
-                    } else {
-                      return ListedPokemonCard(
-                        page: _page,
-                        item: index,
-                      );
-                    }
-                  }),
+      appBar: AppBar(
+        title: const Text('Pokemon'),
+      ),
+      body: FutureBuilder(
+        future: PokeApi.getPokemonList(_page * pageSize, pageSize),
+        builder: (context, snapshot) => CustomScrollView(
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.all(15),
+              sliver: SliverGrid.count(
+                childAspectRatio: 1.3,
+                crossAxisCount: 2,
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 15,
+                children: List.generate(pageSize, (index) {
+                  if (snapshot.hasData) {
+                    return ListedPokemonCard(
+                      pokeList: snapshot.data!,
+                      page: _page,
+                      item: index,
+                    );
+                  } else {
+                    return ListedPokemonCard(
+                      page: _page,
+                      item: index,
+                    );
+                  }
+                }),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        page = max(0, _page - 1);
+                      },
+                      icon: const Icon(Icons.arrow_back),
+                    ),
+                    Text('${_page + 1}'),
+                    IconButton(
+                      onPressed: () {
+                        page = _page + 1;
+                      },
+                      icon: const Icon(Icons.arrow_forward),
+                    ),
+                  ],
                 ),
               ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          page = max(0, _page - 1);
-                        },
-                        icon: const Icon(Icons.arrow_back),
-                      ),
-                      Text('${_page + 1}'),
-                      IconButton(
-                        onPressed: () {
-                          page = _page + 1;
-                        },
-                        icon: const Icon(Icons.arrow_forward),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ));
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

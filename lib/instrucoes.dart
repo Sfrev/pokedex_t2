@@ -7,9 +7,7 @@ class Instrucoes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.instructions)
-      ),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.instructions)),
       body: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Center(
