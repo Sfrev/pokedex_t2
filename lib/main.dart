@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:pokedex_t2/l10n/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pokedex_t2/sfrevao.dart';
 import 'package:pokedex_t2/instrucoes.dart';
 import 'package:pokedex_t2/sfrevinho.dart';
@@ -14,9 +17,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyAppScreen(),
-      // home: const PokemonScreenApp(id: 1),
+    return MaterialApp(
+      home: const MyAppScreen(),
+      supportedLocales: L10n.all,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
     );
   }
 }
@@ -35,7 +44,7 @@ class _MyAppScreen extends State<MyAppScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Here'),
+        title: const Text(''),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -48,31 +57,22 @@ class _MyAppScreen extends State<MyAppScreen> {
             textAlign: TextAlign.center,
           ),
           ElevatedButton(
-            child: const Text(
-              'Pokedex Completa',
-              style: TextStyle(fontFamily: 'pokemons'),
-            ),
-            onPressed: () {
+            child: Text(AppLocalizations.of(context)!.completePokedex, style: TextStyle(fontFamily: 'pokemons'),),
+            onPressed: (){
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const Greeting()));
             },
           ),
           ElevatedButton(
-            child: const Text(
-              'Seus Pokemons',
-              style: TextStyle(fontFamily: 'pokemons'),
-            ),
-            onPressed: () {
+            child: Text(AppLocalizations.of(context)!.yourPokemons, style: TextStyle(fontFamily: 'pokemons'),),
+            onPressed: (){
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const Greeting2()));
             },
           ),
           ElevatedButton(
-            child: const Text(
-              'Instruções',
-              style: TextStyle(fontFamily: 'pokemons'),
-            ),
-            onPressed: () {
+            child: Text(AppLocalizations.of(context)!.instructions, style: TextStyle(fontFamily: 'pokemons'),),
+            onPressed: (){
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const Instrucoes()));
             },
