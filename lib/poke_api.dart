@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 class PokemonListEntry {
@@ -84,17 +85,25 @@ class Pokemon {
 
 class PokeApi {
   static Future<Pokemon> getPokemon(int id) async {
-    final res = await http.get(
-      Uri(
-        scheme: 'https',
-        host: 'pokeapi.co',
-        path: '/api/v2/pokemon/$id',
-      ),
-    );
+    log('Trying to get $id');
+    try{
+      final res = await http.get(
+        Uri(
+          scheme: 'https',
+          host: 'pokeapi.co',
+          path: '/api/v2/pokemon/$id',
+        ),
+      );
 
-    if (res.statusCode == 200) {
-      return Pokemon.fromJson(jsonDecode(res.body));
-    } else {
+      log('Poke Api'+res.toString());
+      if (res.statusCode == 200) {
+        return Pokemon.fromJson(jsonDecode(res.body));
+      } else {
+        throw Exception();
+      }
+    }
+    catch(e){
+      log('AAAAAAA'+e.toString());
       throw Exception();
     }
   }
@@ -111,6 +120,7 @@ class PokeApi {
         },
       ),
     );
+
 
     if (res.statusCode == 200) {
       return PokemonList.fromJson(jsonDecode(res.body));

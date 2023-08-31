@@ -1,5 +1,7 @@
 import 'dart:math';
+import 'dart:developer' as dv;
 import 'package:flutter/material.dart';
+import 'package:pokedex_t2/dbHelper.dart';
 import 'package:pokedex_t2/poke_api.dart';
 import 'package:pokedex_t2/poke_screen.dart';
 
@@ -96,6 +98,13 @@ class ListedPokemonCard extends StatelessWidget {
     required this.item,
   });
 
+  bool caught(int id, List<MyPokes> myPokes){
+    dv.log('loooking for $id');
+    bool ans = false;
+    myPokes.forEach((element) {if(element.id == id) ans = true;});
+    return ans;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -103,35 +112,57 @@ class ListedPokemonCard extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => PokemonScreenApp(id: item + 1, jV: false,)));
+                builder: (context) => PokemonScreenApp(id: item + 1, jV: true,)));
       },
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
             children: [
-              if (pokeList != null)
-                CardTitle(
-                  pokemonName: titleCase(pokeList!.results[item].name),
-                )
-              else
-                const CardTitle(pokemonName: "??????????"),
-              const Divider(height: 8),
               FutureBuilder(
-                future: PokeApi.getPokemon(1 + page * pageSize + item),
-                builder: (context, snapshot) => Expanded(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CardTypeColumn(pokemon: snapshot.data),
-                      Expanded(
-                          child: CardImage(id: 1 + page * pageSize + item)),
-                    ],
+                  future: dbHelper.db.getAllPokes(),
+                  builder: (context, snapshot)  {
+                    dv.log("CHEGAMO");
+                    if(snapshot.hasData) {
+                      snapshot.data!.forEach((element) {dv.log('${element.id}');});
+                    }
+                  if (pokeList != null && caught(1 + page * pageSize + item, snapshot.data!)) {
+                    return CardTitle(
+                      pokemonName: titleCase(pokeList!.results[item].name),
+                    );
+                  } else {
+                    return const CardTitle(pokemonName: "??????????");
+                  }
+                  }),
+              const Divider(height: 8),
+              FutureBuilder(future: dbHelper.db.getAllPokes(),
+                  builder: (context, snap) =>
+                    FutureBuilder(
+                      future: PokeApi.getPokemon(1 + page * pageSize + item),
+                      // future: PokeApi.getPokemon(-1),
+                      builder: (context, snapshot) => Expanded(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if(snap.hasData && caught(1 + page * pageSize + item, snap.data!))...[
+                              CardTypeColumn(pokemon: snapshot.data),
+                              Expanded(
+                                  child: CardImage(id: 1 + page * pageSize + item)),
+                            ]
+                            else...[
+                              Expanded(
+                                  child: CardImage(id: 0)),
+                            ]
+
+                                // child: CardImage(id: 0)),
+                          ],
+                        ),
+                      ),
+                    ),
+
                   ),
-                ),
-              ),
             ],
           ),
         ),
@@ -140,16 +171,16 @@ class ListedPokemonCard extends StatelessWidget {
   }
 }
 
-class Greeting extends StatefulWidget {
-  const Greeting({super.key});
+class Greeting2 extends StatefulWidget {
+  const Greeting2({super.key});
 
   @override
-  State<Greeting> createState() => _GreetingState();
+  State<Greeting2> createState() => _GreetingState();
 }
 
 const pageSize = 40;
 
-class _GreetingState extends State<Greeting> {
+class _GreetingState extends State<Greeting2> {
   int _page = 0;
 
   set page(int page) {
